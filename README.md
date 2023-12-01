@@ -34,11 +34,12 @@ for i in Mapping_array:
     })
     else: print("Column {i} doesn't exist")
 
-# Mapping of cyclical data. First glance, I thought I'd just take the 360/16 = 22.5 degree and use that to represent all the values in the 
-# compass from North to North North West (left side of north). But the issue here is that when I do that, it won't be right. North and North-North West, 
-# which are supposed to be beside each other have significantly different values when represented like that. This isn't good for the model, we need it
-# as accurate as possible and make sense of the data. Hence we take the sin and cos values, this way N and NNE values are vlose to each other
-# i.e; 0 and 360 degree values are represented close to each other as it should be since we're representing a cyclical dataset (directions).
+# Mapping of cyclical data. 
+First glance, I thought I'd just take the 360/16 = 22.5 degree and use that to represent all the values in the 
+compass from North to North North West (left side of north). But the issue here is that when I do that, it won't be right. North and North-North West, 
+which are supposed to be beside each other have significantly different values when represented like that. This isn't good for the model, we need it
+as accurate as possible and make sense of the data. Hence we take the sin and cos values, this way N and NNE values are vlose to each other
+i.e; 0 and 360 degree values are represented close to each other as it should be since we're representing a cyclical dataset (directions).
 
 directions = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW']
 angles = np.arange(0, 2*np.pi,2*np.pi/16)
@@ -60,16 +61,17 @@ X_train, X_test, y_train, y_test = train_test_split(
     random_state = 0
     )
 
-# Apply scaler transformation. What we do here is getting the mean and standard deviation of X_train data and use it to transform X_train and X_test.
-# Why not X_test? To avoid data leakage. Model ain't supposed to know the X_test statistical values during testing. If we do fit X_test, then we'll
-# hae an overly optimistic model. We need the data to predict on never seen before data so that it can be an ideal test.
+# Apply scaler transformation.
+What we do here is getting the mean and standard deviation of X_train data and use it to transform X_train and X_test.
+Why not X_test? To avoid data leakage. Model ain't supposed to know the X_test statistical values during testing. If we do fit X_test, then we'll
+have an overly optimistic model. We need the data to predict on never seen before data so that it can be an ideal test.
 
 scaler = StandardScaler()
 scaler.fit(X_train)
 X_train = scaler.transform(X_train)
 X_test = scaler.transform(X_test)
 
-# Trainng syntax
+# Training syntax
 
 nn = MLPClassifier(
     hidden_layer_sizes = (50,50),
@@ -81,8 +83,9 @@ y_pred = nn.predict(X_test)
 score = accuracy_score(y_pred,y_test)
 print("The accuracy of the model is:",round((score*100),2), "%")
 
-# We can use grid layer search to fine tune our model accuracy. We can change the number of hidden layers our model has or the number of nodes each hidden layer has
-# The grid layer search will find an ideal or the best configuration.
+# We can use grid layer search to fine tune our model accuracy. 
+We can change the number of hidden layers our model has or the number of nodes each hidden layer has
+The grid layer search will find an ideal or the best configuration.
 
 p = {
  'hidden_layer_sizes' : (
